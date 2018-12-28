@@ -12,6 +12,16 @@ namespace HackerRankFunctions
         {
             int iResult = 0;
             long lResult = 0;
+            int[] aiResult;
+
+            aiResult = maximumPerimeterTriangle(new int[] { 1, 1, 1, 3, 3 }); // {1,3,3}
+            aiResult = maximumPerimeterTriangle(new int[] { 1,2,3 }); // {-1}
+            aiResult = maximumPerimeterTriangle(new int[] { 1, 1, 1, 2, 3, 5 }); // {1,1,1}
+            aiResult = maximumPerimeterTriangle(new int[] { 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 
+                                                            1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 
+                                                            1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 
+                                                            1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 
+                                                            1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000}); // {1000000000, 1000000000, 1000000000}
 
             iResult = luckBalance(3, new int[][] { new int[] { 5, 1 }, new int[] { 2, 1 }, new int[] { 1, 1 }, new int[] { 8, 1 }, new int[] { 10, 0 }, new int[] { 5, 0 } }); // 29
             iResult = luckBalance(5, new int[][] {new int[] { 13, 1 }, 
@@ -53,7 +63,11 @@ namespace HackerRankFunctions
 
         static int[] maximumPerimeterTriangle(int[] sticks)
         {
-            int[] rtn = new int[] { };
+            Console.WriteLine(String.Join(",", sticks));
+            sticks = sticks.OrderByDescending(x => x).ToArray();
+
+            List<int> rtn = new List<int> { -1 };
+            long maxVal = 0;
 
             for (int i = 0; i < sticks.Length - 2; i++)
             {
@@ -61,14 +75,29 @@ namespace HackerRankFunctions
                 {
                     for (int k = j + 1; k < sticks.Length; k++)
                     {
-                        if (((sticks[i] + sticks[j]) > sticks[k]) && ((sticks[i] + sticks[k]) > sticks[j]) && ((sticks[j] + sticks[k]) > sticks[i]))
+                        long a = sticks[i];
+                        long b = sticks[j];
+                        long c = sticks[k];
+                        if (((a + b) > c) && ((a + c) > b) && ((b + c) > a))
                         {
+                            if ((a + b + c) > maxVal)
+                            {
+                                rtn.Clear();
+                                rtn.Add((int)c);
+                                rtn.Add((int)b);
+                                rtn.Add((int)a);
+                                break;
+                            }
                         }
                     }
+                    if (rtn.Count() > 1)
+                        break;
                 }
+                if (rtn.Count() > 1)
+                    break;
             }
 
-            return (rtn);
+            return (rtn.ToArray());
         }
 
         static int luckBalance(int k, int[][] contests)
